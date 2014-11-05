@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSONSerializable.h"
 
-@interface SearchResults : NSObject <JSONSerializable>
+@interface SearchResults : NSObject
 
 @property (nonatomic, readonly, strong) NSMutableArray *results;
 

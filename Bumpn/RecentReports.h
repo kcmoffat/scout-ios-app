@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSONSerializable.h"
 
-@interface RecentReports : NSObject <JSONSerializable>
+@interface RecentReports : NSObject
 @property (nonatomic, readonly, strong) NSMutableArray *reports;
 - (void)readFromJSONDictionary:(NSDictionary *)d;
 @end

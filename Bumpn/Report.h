@@ -7,15 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSONSerializable.h"
+#import <UIKit/UIKit.h>
 
-@interface Report : NSObject <JSONSerializable>
+@interface Report : NSObject
 
 @property (strong, nonatomic) NSString *crowdLevelName;
 @property (strong, nonatomic) NSString *comments;
 @property (strong, nonatomic) NSDate *createdAt;
 @property (strong, nonatomic) NSString *deviceId;
+@property (strong, nonatomic) NSString *imageURL;
+@property (strong, nonatomic) UIImage *image;
 
 - (void)readFromJSONDictionary:(NSDictionary *)d;
+- (void)downloadImageWithCompletionBlock:(void (^)(void))completionBlock;
+
 
 @end

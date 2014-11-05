@@ -9,7 +9,7 @@
 #import "PlaceViewController.h"
 #import "Place.h"
 #import "Report.h"
-#import "ReportViewController.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface PlaceViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *commentTextField;
@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIView *reportContainerView;
 @property (copy, nonatomic) NSString *selectedCrowdLevelName;
 @property (copy, nonatomic) NSString *comments;
+@property (strong, nonatomic) NSString *reportPhotoURL;
+@property (weak, nonatomic) IBOutlet UIProgressView *imageUploadProgressView;
 @end
 
 @implementation PlaceViewController
@@ -34,6 +36,89 @@
 @synthesize selectedCrowdLevelName;
 @synthesize comments;
 @synthesize recentReports;
+@synthesize reportPhotoURL;
+@synthesize imageUploadProgressView;
+
+- (IBAction)addPhotoButton:(UIButton *)sender
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    NSString *desired = (NSString *)kUTTypeImage;
+    if ([[UIImagePickerController availableMediaTypesForSourceType:picker.sourceType] containsObject:desired]) {
+        picker.mediaTypes = @[desired];
+    }
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.25);
+    NSString *imageName = [[[NSString stringWithFormat:@"%@/%@", [place googlePlacesId], [[[NSDate date] description] stringByReplacingOccurrencesOfString:@"+" withString:@"_"]] stringByReplacingOccurrencesOfString:@" " withString:@"_"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"imageName: %@", imageName);
+    self.reportPhotoURL = [NSString stringWithFormat:@"http://storage.googleapis.com/bumpn-backend-images/%@", imageName];
+    NSString *imageLength = [NSString stringWithFormat:@"%lu",(unsigned long)[imageData length]];
+    NSString *urlString = [[NSString stringWithFormat:@"http://bumpn-backend.appspot.com/api/v1/images/?name=%@&length=%@&key=%@", imageName, imageLength, @"y3hrlX2A53I1ov5cZokp9Sw9qx00D5AA"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"urlString: %@", urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *sessionTask = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+    {
+                                               if (!error) {
+                                                   NSLog(@"response: %@", [response description]);
+                                                   NSLog(@"data: %@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
+                                                   NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                   NSLog(@"dictionary: %@", [d description]);
+                                                   NSString *uploadURLString = [d objectForKey:@"location"];
+                                                   NSURL *url = [[NSURL alloc] initWithString:uploadURLString];
+                                                   [self uploadImageToGoogleCloudStorage:url withImageData:imageData];
+                                               } else {
+                                                   // raise error alert
+                                                   NSLog(@"error: %@", [error description]);
+                                               }
+                                           }];
+    [sessionTask resume];
+}
+
+- (void)uploadImageToGoogleCloudStorage:(NSURL *)url withImageData:(NSData *)imageData
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPBody:imageData];
+    [request setHTTPMethod:@"PUT"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[imageData length]] forHTTPHeaderField:@"Content-Length"];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    NSURLSessionUploadTask *sessionTask = [session uploadTaskWithRequest:request fromData:imageData completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                                           {
+                                               if (!error) {
+                                                   NSLog(@"successful upload");
+                                               } else {
+                                                   // raise error alert
+                                                   NSLog(@"error: %@", [error description]);
+                                               }
+                                           }];
+    [sessionTask resume];
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self imageUploadProgressView] setProgress:(float)totalBytesSent/(float)totalBytesExpectedToSend];
+    });
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -66,6 +151,21 @@
     }
     UILabel *elapsedTimeLabel = (UILabel *)[cell viewWithTag:3];
     [elapsedTimeLabel setText:[self elapsedTime:[report createdAt]]];
+    NSLog(@"called cellForRowAtIndexPath");
+    UIImageView *photoImageView = (UIImageView *)[cell viewWithTag:4];
+    NSLog(@"report.image: %@", report.image.description);
+    if (!report.image) {
+        NSLog(@"downloading image");
+        [report downloadImageWithCompletionBlock:^{
+            photoImageView.image = report.image;
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//            });
+        }];
+    } else {
+        NSLog(@"loading image from memory");
+        photoImageView.image = report.image;
+    }
     return cell;
 }
 
@@ -95,7 +195,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"count: %lu", (unsigned long)[[self.recentReports reports] count]);
     return [[self.recentReports reports] count];
 }
 
@@ -151,6 +250,10 @@
         if ([self.comments length] > 0) {
             [d setObject:self.comments forKey:@"comments"];
         }
+        if ([self.reportPhotoURL length] > 0) {
+            [d setObject:self.reportPhotoURL forKey:@"photo_url"];
+        }
+        NSLog(@"photo url: %@", self.reportPhotoURL);
         NSLog(@"device id: %@", [[UIDevice currentDevice] identifierForVendor]);
         NSData *data = [NSJSONSerialization dataWithJSONObject:d options:0 error:nil];
         [request setHTTPBody:data];

@@ -16,7 +16,6 @@
 		3B576C7919E678FC006DBD22 /* SearchResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B576C7819E678FC006DBD22 /* SearchResults.m */; };
 		3B576C8219E87528006DBD22 /* PlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B576C8119E87528006DBD22 /* PlaceViewController.m */; };
 		3B895F1019F8450D00DA512C /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B895F0F19F8450D00DA512C /* images.xcassets */; };
-		3B895F1919F9A48500DA512C /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B895F1819F9A48500DA512C /* ReportViewController.m */; };
 		3BC65BC919F63C4D009A906E /* RecentReports.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC65BC819F63C4D009A906E /* RecentReports.m */; };
 		3BC65BCC19F63DB9009A906E /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC65BCB19F63DB9009A906E /* Report.m */; };
 /* End PBXBuildFile section */
@@ -45,14 +44,11 @@
 		3B576C6719E6181C006DBD22 /* BumpnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BumpnTests.m; sourceTree = "<group>"; };
 		3B576C7119E64DC1006DBD22 /* Place.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Place.h; sourceTree = "<group>"; };
 		3B576C7219E64DC1006DBD22 /* Place.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Place.m; sourceTree = "<group>"; };
-		3B576C7419E64E11006DBD22 /* JSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONSerializable.h; sourceTree = "<group>"; };
 		3B576C7719E678FC006DBD22 /* SearchResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResults.h; sourceTree = "<group>"; };
 		3B576C7819E678FC006DBD22 /* SearchResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResults.m; sourceTree = "<group>"; };
 		3B576C8019E87528006DBD22 /* PlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceViewController.h; sourceTree = "<group>"; };
 		3B576C8119E87528006DBD22 /* PlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceViewController.m; sourceTree = "<group>"; };
 		3B895F0F19F8450D00DA512C /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = ../images.xcassets; sourceTree = "<group>"; };
-		3B895F1719F9A48500DA512C /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
-		3B895F1819F9A48500DA512C /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		3BC65BC719F63C4C009A906E /* RecentReports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentReports.h; sourceTree = "<group>"; };
 		3BC65BC819F63C4D009A906E /* RecentReports.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentReports.m; sourceTree = "<group>"; };
 		3BC65BCA19F63DB9009A906E /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
@@ -103,8 +99,6 @@
 				3B576C5319E6181C006DBD22 /* SearchViewController.m */,
 				3B576C8019E87528006DBD22 /* PlaceViewController.h */,
 				3B576C8119E87528006DBD22 /* PlaceViewController.m */,
-				3B895F1719F9A48500DA512C /* ReportViewController.h */,
-				3B895F1819F9A48500DA512C /* ReportViewController.m */,
 				3BC65BC719F63C4C009A906E /* RecentReports.h */,
 				3BC65BC819F63C4D009A906E /* RecentReports.m */,
 				3B576C7719E678FC006DBD22 /* SearchResults.h */,
@@ -113,7 +107,6 @@
 				3BC65BCB19F63DB9009A906E /* Report.m */,
 				3B576C7119E64DC1006DBD22 /* Place.h */,
 				3B576C7219E64DC1006DBD22 /* Place.m */,
-				3B576C7419E64E11006DBD22 /* JSONSerializable.h */,
 				3B895F0F19F8450D00DA512C /* images.xcassets */,
 				3B576C4B19E6181C006DBD22 /* Supporting Files */,
 			);
@@ -253,7 +246,6 @@
 				3B576C5119E6181C006DBD22 /* AppDelegate.m in Sources */,
 				3BC65BC919F63C4D009A906E /* RecentReports.m in Sources */,
 				3B576C4E19E6181C006DBD22 /* main.m in Sources */,
-				3B895F1919F9A48500DA512C /* ReportViewController.m in Sources */,
 				3B576C7319E64DC1006DBD22 /* Place.m in Sources */,
 				3B576C7919E678FC006DBD22 /* SearchResults.m in Sources */,
 				3BC65BCC19F63DB9009A906E /* Report.m in Sources */,
