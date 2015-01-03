@@ -11,7 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "SearchResults.h"
 
-@interface SearchViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate>
+@interface SearchViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UIAlertViewDelegate, UISearchBarDelegate>
 
 @end
 

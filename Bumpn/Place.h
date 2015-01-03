@@ -10,10 +10,13 @@
 
 @interface Place : NSObject
 
-@property (nonatomic, strong) NSNumber *googlePlacesId;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *vicinity;
+@property (nonatomic, copy) NSString *googlePlacesId;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *vicinity;
+@property (nonatomic, copy) NSString *phone;
 
 - (void)readNearbyPlacesFromJSONDictionary:(NSDictionary *)d;
 - (void)readAutocompletePlacesFromJSONDictionary:(NSDictionary *)d;
+- (void)readRecentSearchesFromJSONDictionary:(NSDictionary *)d;
+- (void)readPlaceDetailsFromJSONDictionary:(NSDictionary *)d;
 @end

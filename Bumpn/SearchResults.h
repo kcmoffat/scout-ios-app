@@ -12,6 +12,8 @@
 
 @property (nonatomic, readonly, strong) NSMutableArray *results;
 
-- (void)readFromJSONDictionary:(NSDictionary *)d;
+- (void)readAutocompleteResultsFromJSONDictionary:(NSDictionary *)d;
+- (void)readRecentSearchResultsFromJSONDictionary:(NSDictionary *)d;
+- (void)readNearbySearchResultsFromJSONDictionary:(NSDictionary *)d;
 
 @end

@@ -12,6 +12,7 @@
 @interface Report : NSObject
 
 @property (strong, nonatomic) NSString *crowdLevelName;
+@property (strong, nonatomic) NSMutableArray *tags;
 @property (strong, nonatomic) NSString *comments;
 @property (strong, nonatomic) NSDate *createdAt;
 @property (strong, nonatomic) NSString *deviceId;
@@ -19,7 +20,5 @@
 @property (strong, nonatomic) UIImage *image;
 
 - (void)readFromJSONDictionary:(NSDictionary *)d;
-- (void)downloadImageWithCompletionBlock:(void (^)(void))completionBlock;
-
 
 @end

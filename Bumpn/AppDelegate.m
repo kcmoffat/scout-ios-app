@@ -14,10 +14,20 @@
 
 @implementation AppDelegate
 
+//-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+//{
+//    NSLog(@"received device token: %@", deviceToken.description);
+//}
+//
+//-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+//{
+//    NSLog(@"failed to register for push notifications: %@", error.description);
+//}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     return YES;
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

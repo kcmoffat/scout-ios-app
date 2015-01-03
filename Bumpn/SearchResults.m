@@ -21,25 +21,38 @@
     return self;
 }
 
-- (void)readFromJSONDictionary:(NSDictionary *)d
+- (void)readAutocompleteResultsFromJSONDictionary:(NSDictionary *)d
 {
-    if ([d objectForKey:@"predictions"]) {
-        NSLog(@"reading prediction JSON");
-        NSDictionary *searchResults = [d objectForKey:@"predictions"];
-        for (NSDictionary *searchResult in searchResults) {
-            Place *p = [[Place alloc] init];
-            [p readAutocompletePlacesFromJSONDictionary:searchResult];
-            [results addObject:p];
-        }
-    } else {
-        NSLog(@"reading nearby JSON");
-        NSDictionary *searchResults = [d objectForKey:@"results"];
-        for (NSDictionary *searchResult in searchResults) {
-            Place *p = [[Place alloc] init];
-            [p readNearbyPlacesFromJSONDictionary:searchResult];
-            [results addObject:p];
-        }
+    NSLog(@"reading prediction JSON");
+    NSDictionary *searchResults = [d objectForKey:@"predictions"];
+    for (NSDictionary *searchResult in searchResults) {
+        Place *p = [[Place alloc] init];
+        [p readAutocompletePlacesFromJSONDictionary:searchResult];
+        [results addObject:p];
     }
 }
+
+- (void)readRecentSearchResultsFromJSONDictionary:(NSDictionary *)d
+{
+    NSLog(@"reading nearby JSON");
+    NSDictionary *searchResults = [d objectForKey:@"searches"];
+    for (NSDictionary *searchResult in searchResults) {
+        Place *p = [[Place alloc] init];
+        [p readRecentSearchesFromJSONDictionary:searchResult];
+        [results addObject:p];
+    }
+}
+
+- (void)readNearbySearchResultsFromJSONDictionary:(NSDictionary *)d
+{
+    NSLog(@"reading nearby JSON");
+    NSDictionary *searchResults = [d objectForKey:@"results"];
+    for (NSDictionary *searchResult in searchResults) {
+        Place *p = [[Place alloc] init];
+        [p readNearbyPlacesFromJSONDictionary:searchResult];
+        [results addObject:p];
+    }
+}
+
 
 @end

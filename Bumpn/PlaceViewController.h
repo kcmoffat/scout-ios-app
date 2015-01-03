@@ -10,7 +10,6 @@
 #import "Place.h"
 #import "RecentReports.h"
 
-@interface PlaceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSURLSessionTaskDelegate>
+@interface PlaceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) Place *place;
-@property (strong, nonatomic) RecentReports *recentReports;
 @end
